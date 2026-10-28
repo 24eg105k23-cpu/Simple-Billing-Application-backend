@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: billing-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./billing_application/Dockerfile
+    dockerContext: ./billing_application
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: billing-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: billing-db
+          property: port
+      - key: DB_NAME
+        value: billing_db
+      - key: DB_USER
+        fromDatabase:
+          name: billing-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: billing-db
+          property: password
+      - key: FRONTEND_URL
+        sync: false
+
+databases:
+  - name: billing-db
+    databaseName: billing_db
+    user: billing_user
+    plan: free
